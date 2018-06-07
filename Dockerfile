@@ -23,8 +23,5 @@ RUN mv istio-${ISTIO_VERSION}/bin/istioctl /usr/local/bin/
 
 # Download and setup Istio source code used to build binaries and run Istio E2E tests.
 RUN cd $ISTIO && git clone -b release-${ISTIO_MAJOR_VERSION} https://github.com/istio/istio.git
-#ADD start.sh ${ISTIO}/istio
-#RUN chmod +x ${ISTIO}/istio/start.sh
-#ENTRYPOINT ${ISTIO}/istio
 WORKDIR $ISTIO/istio
 RUN make e2e_simple E2E_ARGS="--auth_enable --use_local_cluster --istioctl ${GOPATH}/out/linux_amd64/release/istioctl-linux"
