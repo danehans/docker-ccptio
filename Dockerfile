@@ -13,7 +13,7 @@ ENV ISTIO=/go/src/istio.io
 # Download and setup kubectl client used by Istio E2E test framework. 
 ADD https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl /usr/local/bin/kubectl
 RUN chmod +x /usr/local/bin/kubectl
-RUN mkdir -p $ISTIO/.kube
+RUN mkdir -p /root/.kube
 COPY config /root/.kube/
 
 # Download and setup istioctl client used by Istio E2E test framework. 
