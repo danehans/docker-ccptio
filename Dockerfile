@@ -2,11 +2,10 @@ FROM golang:1.9.2
 
 # Set environment variables used by Istio E2E test framework
 ENV GOPATH=/go
-ENV HUB="docker.io/istio"
+ENV HUB=istio
 ENV TAG=0.8.0
-ENV ISTIO_MAJOR_VERSION=0.8
-ENV ISTIO_MINOR_VERSION=.0
-ENV ISTIO_VERSION=$ISTIO_MAJOR_VERSION$ISTIO_MINOR_VERSION
+ENV ISTIO_VERSION=0.8.0
+ENV ISTIO_BRANCH=release-0.8
 ENV KUBECTL_VERSION=1.10.1
 ENV ISTIO=/go/src/istio.io
 
@@ -22,6 +21,7 @@ RUN chmod +x istio-${ISTIO_VERSION}/bin/istioctl
 RUN mv istio-${ISTIO_VERSION}/bin/istioctl /usr/local/bin/
 
 # Download and setup Istio source code used to build binaries and run Istio E2E tests.
-RUN cd $ISTIO && git clone -b release-${ISTIO_MAJOR_VERSION} https://github.com/istio/istio.git
+RUN mkdir -p $ISTIO
+RUN cd $ISTIO && git clone -b ${ISTIO_BRANCH} https://github.com/istio/istio.git
 WORKDIR $ISTIO/istio
-RUN make e2e_simple E2E_ARGS="--auth_enable --use_local_cluster --istioctl ${GOPATH}/out/linux_amd64/release/istioctl-linux"
+RUN make e2e_simple E2E_ARGS="--auth_enable --use_local_cluster --istioctl /usr/local/bin/istioctl"
